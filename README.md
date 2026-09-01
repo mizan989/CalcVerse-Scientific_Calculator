@@ -1,6 +1,6 @@
-﻿# CalcVerse — Scientific Calculator Web Application
+# CalcVerse — Scientific Calculator Web Application
 
-[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://mizan989.github.io/CalcVerse/)
+[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://mizan989.github.io/CalcVerse-Scientific_Calculator/)
 [![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://react.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 [![mathjs](https://img.shields.io/badge/Engine-mathjs-orange)](https://mathjs.org/)
@@ -12,7 +12,7 @@ An advanced, responsive scientific calculator web application built with React, 
 ## Live Demo
 
 Experience the live application hosted on GitHub Pages:
-**[https://mizan989.github.io/CalcVerse/](https://mizan989.github.io/CalcVerse/)**
+**[https://mizan989.github.io/CalcVerse-Scientific_Calculator/](https://mizan989.github.io/CalcVerse-Scientific_Calculator/)**
 
 ---
 
