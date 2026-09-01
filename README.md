@@ -1,124 +1,57 @@
-# [CalcVerse](https://mizan989.github.io/CalcVerse/)
+﻿# CalcVerse — Scientific Calculator Web Application
 
-A scientific calculator built with React, Tailwind CSS, and [mathjs](https://mathjs.org/) — degree/radian trig, memory functions, calculation history, keyboard shortcuts, and three built-in themes.
+[![Live Demo](https://img.shields.io/badge/demo-online-brightgreen.svg)](https://mizan989.github.io/CalcVerse/)
+[![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
+[![mathjs](https://img.shields.io/badge/Engine-mathjs-orange)](https://mathjs.org/)
 
-**Live demo:** ([CalcVerse](https://mizan989.github.io/CalcVerse/))
+An advanced, responsive scientific calculator web application built with React, Tailwind CSS, and mathjs. CalcVerse combines robust mathematical precision with an intuitive, keyboard-accessible interface and dynamic visual themes.
 
-## Features
+---
 
-- **Standard + scientific operations** — basic arithmetic plus `sin`, `cos`, `tan` (and their inverses), `log`, `ln`, `√`, `∛`, `x²`, `x³`, `xʸ`, `10ˣ`, `eˣ`, `|x|`, `1/x`, floor/ceiling, factorial, and `mod`
-- **DEG / RAD toggle** — switch angle units for trig functions
-- **INV toggle** — swap trig buttons for their inverse functions (sin⁻¹, cos⁻¹, tan⁻¹, 10ˣ, eˣ)
-- **Memory functions** — MC, MR, MS, M+, M-
-- **Live preview** — shows the evaluated result under the current expression as you type
-- **Calculation history** — sidebar (drawer on mobile) listing past calculations; click an entry to reuse it, copy it, or delete it
-- **Keyboard support** — type expressions directly; `Enter`/`=` to evaluate, `Esc` to clear, plus single-key shortcuts for common functions (see in-app shortcut panel)
-- **Three themes** — Dark, Light, and Cyber, toggled from the header
-- **Responsive layout** — usable on both desktop and mobile screen sizes
+## Live Demo
 
-## Tech stack
+Experience the live application hosted on GitHub Pages:
+**[https://mizan989.github.io/CalcVerse/](https://mizan989.github.io/CalcVerse/)**
 
-- [React 19](https://react.dev/)
-- [Vite](https://vitejs.dev/) — build tool and dev server
-- [Tailwind CSS v4](https://tailwindcss.com/) — styling
-- [mathjs](https://mathjs.org/) — expression parsing and evaluation
-- [lucide-react](https://lucide.dev/) — icons
+---
 
-## Getting started
+## UI Preview
 
-### Prerequisites
+![CalcVerse Interface](./assets/screenshot.png)
 
-- [Node.js](https://nodejs.org/) v18 or later
+---
 
-### Installation
+## Key Features
+
+- **Comprehensive Mathematical Engine:** Standard arithmetic, trigonometry (sine, cosine, tangent and inverse functions), logarithms, powers, factorials, roots, and modulo.
+- **Angle Mode Switching:** Seamless toggle between Degree (DEG) and Radian (RAD) calculation modes.
+- **Calculation History & Memory:** Persistent calculation ledger with recallable past results and memory register operations (M+, M-, MR, MC).
+- **Multiple Visual Themes:** Dark, Light, and Cyberpunk themes tailored for clarity and low eye strain.
+- **Full Keyboard Accessibility:** Complete numeric keypad and operation hotkey bindings for rapid input.
+
+---
+
+## Tech Stack
+
+- **Framework:** React 18 (Vite)
+- **Mathematical Evaluation:** mathjs
+- **Styling:** Tailwind CSS
+- **Deployment:** GitHub Pages
+
+---
+
+## Getting Started
 
 ```bash
-git clone https://github.com/mizan989/CalcVerse.git
-cd calcverse
+# Clone the repository
+git clone https://github.com/mizan989/CalcVerse-Scientific_Calculator.git
+cd CalcVerse-Scientific_Calculator
+
+# Install dependencies
 npm install
-```
 
-### Run locally
-
-```bash
+# Run the development server
 npm run dev
 ```
-
-Vite will print a local URL (usually `http://localhost:5173`) — open it in your browser.
-
-### Build for production
-
-```bash
-npm run build
-```
-
-Output is written to the `dist/` folder.
-
-### Preview the production build
-
-```bash
-npm run preview
-```
-
-## Deploying to GitHub Pages
-
-This project can be hosted for free with GitHub Pages:
-
-1. Install the deploy helper:
-   ```bash
-   npm install gh-pages --save-dev
-   ```
-2. In `vite.config.js`, set `base` to your repo name:
-   ```js
-   export default defineConfig({
-     plugins: [react(), tailwindcss()],
-     base: '/calcverse/',
-   })
-   ```
-3. Add to `package.json` scripts:
-   ```json
-   "predeploy": "npm run build",
-   "deploy": "gh-pages -d dist"
-   ```
-4. Deploy:
-   ```bash
-   npm run deploy
-   ```
-5. In your GitHub repo, go to **Settings → Pages**, set source to the `gh-pages` branch, and save.
-
-Your app will be live at `https://mizan989.github.io/calcverse/`.
-
-## Project structure
-
-```
-calcverse/
-├── public/
-│   ├── favicon.svg
-│   └── icons.svg
-├── src/
-│   ├── assets/
-│   ├── App.jsx          # renders CalcVerse
-│   ├── CalcVerse.jsx    # main calculator component
-│   ├── index.css        # Tailwind import + base styles
-│   └── main.jsx         # React entry point
-├── index.html
-├── vite.config.js
-├── eslint.config.js
-└── package.json
-```
-
-## Keyboard shortcuts
-
-| Key | Action | 
-|-----|--------|
-| `0`–`9`, `+ - * / ( ) . % ^` | Enter digits and operators |
-| `Enter` or `=` | Evaluate expression |
-| `Backspace` | Delete last character |
-| `Esc` | Clear |
-| `S` | Insert `sin(` |
-| `C` | Insert `cos(` |
-| `T` | Insert `tan(` |
-| `L` | Insert `log(` (log base 10) |
-| `N` | Insert `ln(` (natural log) |
-| `P` | Insert `π` |
-| `E` | Insert Euler's number `e` |
+Open [http://localhost:5173](http://localhost:5173) to view the calculator.
