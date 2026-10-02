@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from 'framer-motion';
 import { TactileButton } from './ui/TactileButton';
 
 export function Keypad({
@@ -19,7 +20,7 @@ export function Keypad({
           { label: 'sin⁻¹', action: { type: 'func', value: 'asin(' }, sublabel: 'asin', soundType: 'func' },
           { label: 'cos⁻¹', action: { type: 'func', value: 'acos(' }, sublabel: 'acos', soundType: 'func' },
           { label: 'tan⁻¹', action: { type: 'func', value: 'atan(' }, sublabel: 'atan', soundType: 'func' },
-          { label: '10ˣ', action: { type: 'func', value: '10^(' }, sublabel: 'pow10', soundType: 'func' },
+          { label: '10ˣ', action: { type: 'func', value: '10^(' }, sublabel: '10^x', soundType: 'func' },
           { label: 'eˣ', action: { type: 'func', value: 'exp(' }, sublabel: 'exp', soundType: 'func' },
         ]
       : [
@@ -31,8 +32,8 @@ export function Keypad({
         ],
     // Row 2: Powers & Parentheses
     [
-      { label: '(', action: { type: 'op', value: '(' }, shortcut: '(', tone: 'op' },
-      { label: ')', action: { type: 'op', value: ')' }, shortcut: ')', tone: 'op' },
+      { label: '(', action: { type: 'op', value: '(' }, shortcut: '(', tone: 'func' },
+      { label: ')', action: { type: 'op', value: ')' }, shortcut: ')', tone: 'func' },
       { label: 'x²', action: { type: 'postfix', value: '^2' }, soundType: 'func' },
       { label: 'x³', action: { type: 'postfix', value: '^3' }, soundType: 'func' },
       { label: 'xʸ', action: { type: 'op', value: '^' }, shortcut: '^', soundType: 'func' },
@@ -49,9 +50,9 @@ export function Keypad({
     [
       { label: '|x|', action: { type: 'func', value: 'abs(' }, soundType: 'func' },
       { label: '1/x', action: { type: 'reciprocal' }, soundType: 'func' },
-      { label: '⌊x⌋', action: { type: 'func', value: 'floor(' }, soundType: 'func' },
-      { label: '⌈x⌉', action: { type: 'func', value: 'ceil(' }, soundType: 'func' },
-      { label: 'mod', action: { type: 'op', value: ' mod ' }, soundType: 'op', tone: 'op' },
+      { label: 'floor', action: { type: 'func', value: 'floor(' }, soundType: 'func' },
+      { label: 'ceil', action: { type: 'func', value: 'ceil(' }, soundType: 'func' },
+      { label: 'mod', action: { type: 'op', value: ' mod ' }, soundType: 'op', tone: 'func' },
     ],
   ];
 
@@ -62,7 +63,7 @@ export function Keypad({
       { label: 'OR', action: { type: 'op', value: ' or ' }, tone: 'func' },
       { label: 'XOR', action: { type: 'op', value: ' xor ' }, tone: 'func' },
       { label: 'NOT', action: { type: 'func', value: 'not ' }, tone: 'func' },
-      { label: 'mod', action: { type: 'op', value: ' mod ' }, tone: 'op' },
+      { label: 'mod', action: { type: 'op', value: ' mod ' }, tone: 'func' },
     ],
     [
       { label: '<<', action: { type: 'op', value: ' << ' }, tone: 'func' },
@@ -74,14 +75,14 @@ export function Keypad({
   ];
 
   return (
-    <div className="w-full flex flex-col gap-1 sm:gap-1.5">
-      {/* Top Function Toolbar (Memory & Quick Modifiers) */}
-      <div className="flex items-center justify-between gap-1 overflow-x-auto pb-0.5 text-xs">
-        <div className="flex items-center gap-1">
+    <div className="w-full flex flex-col gap-1.5 sm:gap-2">
+      {/* Top Function Toolbar (Angle, Inverse, & Memory Registers) */}
+      <div className="flex items-center justify-between gap-1 overflow-x-auto scrollbar-none pb-0.5 text-xs">
+        <div className="flex items-center gap-1 shrink-0">
           <button
             type="button"
             onClick={onToggleAngle}
-            className={`px-2 py-0.5 rounded-md font-calc-btn text-[10px] sm:text-[11px] font-medium tracking-wide transition-all ${
+            className={`px-2 py-0.5 rounded-md font-mono-math text-[10px] sm:text-[11px] font-medium tracking-wide transition-colors ${
               angleMode === 'DEG' ? theme.activeBadge : theme.idleBadge
             }`}
             title="Toggle Degrees / Radians"
@@ -91,47 +92,47 @@ export function Keypad({
           <button
             type="button"
             onClick={onToggleInv}
-            className={`px-2 py-0.5 rounded-md font-calc-btn text-[10px] sm:text-[11px] font-medium tracking-wide transition-all ${
+            className={`px-2 py-0.5 rounded-md font-mono-math text-[10px] sm:text-[11px] font-medium tracking-wide transition-colors ${
               inv ? theme.activeBadge : theme.idleBadge
             }`}
-            title="Toggle Inverse Functions"
+            title="Toggle Inverse Functions (2nd)"
           >
             INV
           </button>
         </div>
 
-        {/* Memory bank quick triggers */}
-        <div className="flex items-center gap-0.5 sm:gap-1">
+        {/* Memory Registers */}
+        <div className="flex items-center gap-0.5 sm:gap-1 shrink-0">
           <button
             type="button"
             onClick={() => onAction({ type: 'mc' })}
-            className={`px-1.5 py-0.5 rounded-md font-calc-btn text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
-            title="Clear Memory"
+            className={`px-1.5 py-0.5 rounded-md font-mono-math text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
+            title="Memory Clear"
           >
             MC
           </button>
           <button
             type="button"
             onClick={() => onAction({ type: 'mr' })}
-            className={`px-1.5 py-0.5 rounded-md font-calc-btn text-[10px] tracking-wider transition-colors ${
+            className={`px-1.5 py-0.5 rounded-md font-mono-math text-[10px] tracking-wider transition-colors ${
               memory !== null ? theme.toolbarBtnActive : theme.toolbarBtn
             }`}
-            title="Recall Memory"
+            title="Memory Recall"
           >
             MR
           </button>
           <button
             type="button"
             onClick={() => onAction({ type: 'ms' })}
-            className={`px-1.5 py-0.5 rounded-md font-calc-btn text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
-            title="Store Current Value"
+            className={`px-1.5 py-0.5 rounded-md font-mono-math text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
+            title="Memory Store"
           >
             MS
           </button>
           <button
             type="button"
             onClick={() => onAction({ type: 'm+' })}
-            className={`px-1.5 py-0.5 rounded-md font-calc-btn text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
+            className={`px-1.5 py-0.5 rounded-md font-mono-math text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
             title="Memory Add"
           >
             M+
@@ -139,57 +140,73 @@ export function Keypad({
           <button
             type="button"
             onClick={() => onAction({ type: 'm-' })}
-            className={`px-1.5 py-0.5 rounded-md font-calc-btn text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
+            className={`px-1.5 py-0.5 rounded-md font-mono-math text-[10px] tracking-wider transition-colors ${theme.toolbarBtn}`}
             title="Memory Subtract"
           >
-            M-
+            M−
           </button>
         </div>
       </div>
 
-      {/* Mode-Specific Function Grid */}
-      {mode === 'scientific' && (
-        <div className="grid grid-cols-5 gap-1">
-          {scientificRows.map((row, rIdx) =>
-            row.map((btn, cIdx) => (
-              <TactileButton
-                key={`${rIdx}-${cIdx}`}
-                label={btn.label}
-                sublabel={btn.sublabel}
-                shortcut={btn.shortcut}
-                onClick={() => onAction(btn.action)}
-                tone={btn.tone || 'func'}
-                theme={theme}
-                isMuted={isMuted}
-                soundType={btn.soundType || 'func'}
-                className="h-7 sm:h-7.5 lg:h-8 text-xs sm:text-[13px] font-normal tracking-tight"
-              />
-            ))
-          )}
-        </div>
-      )}
+      {/* Mode-Specific Function Grids */}
+      <AnimatePresence mode="wait">
+        {mode === 'scientific' && (
+          <motion.div
+            key="scientific-grid"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.14 }}
+            className="grid grid-cols-5 gap-1 sm:gap-1.5 w-full min-w-0"
+          >
+            {scientificRows.map((row, rIdx) =>
+              row.map((btn, cIdx) => (
+                <TactileButton
+                  key={`sci-${rIdx}-${cIdx}`}
+                  label={btn.label}
+                  sublabel={btn.sublabel}
+                  shortcut={btn.shortcut}
+                  onClick={() => onAction(btn.action)}
+                  tone={btn.tone || 'func'}
+                  theme={theme}
+                  isMuted={isMuted}
+                  soundType={btn.soundType || 'func'}
+                  className="h-7 sm:h-7.5 md:h-8 text-[11px] sm:text-xs md:text-[13px] font-normal tracking-tight min-w-0 w-full"
+                />
+              ))
+            )}
+          </motion.div>
+        )}
 
-      {mode === 'programmer' && (
-        <div className="grid grid-cols-5 gap-1">
-          {programmerRows.map((row, rIdx) =>
-            row.map((btn, cIdx) => (
-              <TactileButton
-                key={`prog-${rIdx}-${cIdx}`}
-                label={btn.label}
-                onClick={() => onAction(btn.action)}
-                tone={btn.tone || 'func'}
-                theme={theme}
-                isMuted={isMuted}
-                soundType="func"
-                className="h-7 sm:h-7.5 lg:h-8 text-[10px] sm:text-[11px] font-medium tracking-wide"
-              />
-            ))
-          )}
-        </div>
-      )}
+        {mode === 'programmer' && (
+          <motion.div
+            key="programmer-grid"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.14 }}
+            className="grid grid-cols-5 gap-1 sm:gap-1.5 w-full min-w-0"
+          >
+            {programmerRows.map((row, rIdx) =>
+              row.map((btn, cIdx) => (
+                <TactileButton
+                  key={`prog-${rIdx}-${cIdx}`}
+                  label={btn.label}
+                  onClick={() => onAction(btn.action)}
+                  tone={btn.tone || 'func'}
+                  theme={theme}
+                  isMuted={isMuted}
+                  soundType="func"
+                  className="h-7 sm:h-7.5 md:h-8 text-[10px] sm:text-[11px] font-medium tracking-wide min-w-0 w-full"
+                />
+              ))
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Core Numeric & Standard Keypad Grid */}
-      <div className="grid grid-cols-4 gap-1 sm:gap-1.5">
+      {/* Core Numeric & Standard Keypad Grid (4 Columns) */}
+      <div className="grid grid-cols-4 gap-1 sm:gap-1.5 w-full min-w-0">
         {/* Row 1: Clear, Backspace, Modifiers, Division */}
         <TactileButton
           label="AC"
@@ -199,7 +216,7 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="clear"
-          className="h-8 sm:h-9 lg:h-10 text-xs sm:text-sm font-medium tracking-wider"
+          className="h-8.5 sm:h-9 md:h-10 text-xs sm:text-sm font-medium tracking-wider min-w-0 w-full"
         />
         <TactileButton
           label="⌫"
@@ -209,7 +226,8 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="op"
-          className="h-8 sm:h-9 lg:h-10 text-sm sm:text-base font-normal"
+          aria-label="Backspace"
+          className="h-8.5 sm:h-9 md:h-10 text-sm sm:text-base font-normal min-w-0 w-full"
         />
         <TactileButton
           label="%"
@@ -219,7 +237,7 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="op"
-          className="h-8 sm:h-9 lg:h-10 text-xs sm:text-sm font-normal"
+          className="h-8.5 sm:h-9 md:h-10 text-xs sm:text-sm font-normal min-w-0 w-full"
         />
         <TactileButton
           label="÷"
@@ -229,7 +247,7 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="op"
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-light"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-light min-w-0 w-full"
         />
 
         {/* Row 2: 7, 8, 9, Multiplication */}
@@ -240,7 +258,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="8"
@@ -249,7 +267,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="9"
@@ -258,7 +276,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="×"
@@ -268,7 +286,7 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="op"
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-light"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-light min-w-0 w-full"
         />
 
         {/* Row 3: 4, 5, 6, Subtraction */}
@@ -279,7 +297,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="5"
@@ -288,7 +306,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="6"
@@ -297,7 +315,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="−"
@@ -307,7 +325,7 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="op"
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-light"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-light min-w-0 w-full"
         />
 
         {/* Row 4: 1, 2, 3, Addition */}
@@ -318,7 +336,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="2"
@@ -327,7 +345,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="3"
@@ -336,7 +354,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="+"
@@ -346,7 +364,7 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="op"
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-light"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-light min-w-0 w-full"
         />
 
         {/* Row 5: Plus/Minus, 0, Decimal Point, Equals */}
@@ -356,7 +374,8 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-xs sm:text-sm font-normal"
+          aria-label="Toggle sign"
+          className="h-8.5 sm:h-9 md:h-10 text-xs sm:text-sm font-normal min-w-0 w-full"
         />
         <TactileButton
           label="0"
@@ -365,7 +384,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-normal sm:font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-normal sm:font-medium min-w-0 w-full"
         />
         <TactileButton
           label="."
@@ -374,7 +393,7 @@ export function Keypad({
           tone="num"
           theme={theme}
           isMuted={isMuted}
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-medium"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-medium min-w-0 w-full"
         />
         <TactileButton
           label="="
@@ -384,9 +403,11 @@ export function Keypad({
           theme={theme}
           isMuted={isMuted}
           soundType="equals"
-          className="h-8 sm:h-9 lg:h-10 text-base sm:text-lg font-medium"
+          aria-label="Equals"
+          className="h-8.5 sm:h-9 md:h-10 text-base sm:text-lg font-semibold min-w-0 w-full"
         />
       </div>
     </div>
   );
 }
+

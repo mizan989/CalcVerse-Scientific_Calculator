@@ -20,102 +20,123 @@ export function CalculatorDisplay({
     if (navigator.clipboard) {
       navigator.clipboard.writeText(textToCopy);
       setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
+      setTimeout(() => setCopied(false), 1400);
     }
   };
 
+  const displayText = error ? error : (expression || '0');
+  const textLength = displayText.length;
+
+  // Responsive font size calculation to prevent clipping of long expressions
+  let fontClasses = 'text-2xl sm:text-3xl md:text-4xl';
+  if (textLength > 20) {
+    fontClasses = 'text-base sm:text-lg md:text-xl';
+  } else if (textLength > 12) {
+    fontClasses = 'text-xl sm:text-2xl md:text-3xl';
+  }
+
   return (
-    <div className={`relative w-full rounded-2xl border p-3 sm:p-4 transition-all duration-200 ${theme.displayBg} ${theme.panelBorder} shadow-xs group`}>
-      {/* Top Status & Register Badges */}
-      <div className="flex items-center justify-between gap-2 mb-1">
-        <div className="flex items-center gap-1.5">
-          <span className={`px-1.5 py-0.2 rounded text-[10px] font-calc-btn font-medium tracking-wider border ${
-            angleMode === 'DEG' ? theme.activeBadge : theme.idleBadge
-          }`}>
+    <div className={`relative w-full rounded-2xl border ${theme.panelBorder} ${theme.displayBg} p-3 sm:p-4 shadow-inner flex flex-col justify-between transition-colors duration-150 group`}>
+      {/* Top Status & Register Badges Bar */}
+      <div className="flex items-center justify-between gap-2 min-h-[22px] mb-1">
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span
+            className={`px-1.5 py-0.5 rounded text-[10px] font-mono-math tracking-wider border transition-colors ${
+              angleMode === 'DEG' ? theme.activeBadge : theme.idleBadge
+            }`}
+          >
             {angleMode}
           </span>
           {inv && (
-            <span className={`px-1.5 py-0.2 rounded text-[10px] font-calc-btn font-medium tracking-wider border ${theme.activeBadge}`}>
+            <span className={`px-1.5 py-0.5 rounded text-[10px] font-mono-math tracking-wider border ${theme.activeBadge}`}>
               INV
             </span>
           )}
           {memory !== null && (
-            <span className={`px-1.5 py-0.2 rounded text-[10px] font-calc-btn font-medium tracking-wider border ${theme.activeBadge}`} title={`Memory: ${memory}`}>
-              MEM: {typeof memory === 'number' ? Number(memory.toFixed(3)) : memory}
+            <span
+              className={`px-1.5 py-0.5 rounded text-[10px] font-mono-math tracking-wider border ${theme.activeBadge}`}
+              title={`Memory Register: ${memory}`}
+            >
+              M: {typeof memory === 'number' ? Number(memory.toFixed(4)) : memory}
             </span>
           )}
         </div>
 
-        {/* Copy / Action tools */}
-        <div className="flex items-center gap-1">
-          <button
-            onClick={handleCopy}
-            className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-calc-btn font-medium transition-opacity duration-150 ${
-              copied ? 'text-emerald-500 bg-emerald-500/10' : `${theme.subtext} hover:${theme.text} hover:bg-white/5`
-            }`}
-            title="Copy current value"
-          >
-            {copied ? (
-              <>
-                <Check className="w-3 h-3" />
-                <span className="text-[10px]">Copied</span>
-              </>
-            ) : (
-              <>
-                <Copy className="w-3 h-3 opacity-60 group-hover:opacity-100" />
-                <span className="text-[10px] hidden sm:inline">Copy</span>
-              </>
-            )}
-          </button>
-        </div>
+        {/* Copy Trigger */}
+        <button
+          type="button"
+          onClick={handleCopy}
+          aria-label="Copy current value"
+          className={`flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-calc-btn transition-all duration-150 border ${theme.panelBorderSubtle} ${
+            copied
+              ? 'text-emerald-400 bg-emerald-500/15 border-emerald-500/30'
+              : `${theme.subtext} hover:${theme.text} hover:bg-white/[0.06]`
+          }`}
+          title="Copy value to clipboard"
+        >
+          {copied ? (
+            <>
+              <Check className="w-3 h-3 text-emerald-400" />
+              <span className="text-[10px] font-medium text-emerald-400">Copied</span>
+            </>
+          ) : (
+            <>
+              <Copy className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+              <span className="text-[10px] opacity-75 hidden xs:inline">Copy</span>
+            </>
+          )}
+        </button>
       </div>
 
-      {/* Previous Calculation Breadcrumb Trail */}
-      <div className="min-h-[16px] flex items-center justify-end overflow-hidden">
+      {/* Expression / Previous Calculation Trail */}
+      <div className="min-h-[18px] flex items-center justify-end overflow-hidden mb-1">
         <AnimatePresence mode="wait">
-          {prevLine && !error && (
+          {prevLine && !error ? (
             <motion.div
               key={prevLine}
-              initial={{ opacity: 0, y: -2 }}
-              animate={{ opacity: 0.6, y: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.65 }}
               exit={{ opacity: 0 }}
-              className={`text-right font-mono-math text-[11px] sm:text-xs ${theme.subtext} truncate`}
+              transition={{ duration: 0.15 }}
+              className={`text-right font-mono-math text-xs sm:text-[13px] ${theme.subtext} truncate max-w-full`}
             >
               {prevLine}
             </motion.div>
+          ) : (
+            <div className="h-[18px]" />
           )}
         </AnimatePresence>
       </div>
 
-      {/* Primary Calculation Display Output */}
-      <div className="relative flex items-baseline justify-end min-h-[40px] sm:min-h-[50px] overflow-x-auto overflow-y-hidden py-0.5">
+      {/* Primary Instrument Output Display */}
+      <div className="relative flex items-baseline justify-end min-h-[38px] sm:min-h-[48px] overflow-x-auto overflow-y-hidden py-0.5 scrollbar-none">
         <div
-          className={`font-mono-math font-light tracking-tight text-right text-2xl sm:text-4xl leading-none transition-colors duration-150 ${
-            error ? 'text-rose-500 font-normal text-xl sm:text-2xl' : theme.text
+          className={`font-mono-math font-light tracking-tight text-right leading-none whitespace-nowrap select-all transition-all duration-150 ${fontClasses} ${
+            error ? 'text-rose-400 font-normal' : theme.text
           }`}
         >
-          {error ? error : (expression || '0')}
+          {displayText}
         </div>
 
-        {/* Blinking Minimalist Caret */}
+        {/* Precision Caret */}
         {!error && (
-          <span className={`inline-block w-[2.5px] h-6 sm:h-7 ml-1 rounded-full ${theme.caret} animate-pulse shrink-0 self-center`} />
+          <span
+            className={`inline-block w-[2px] h-5 sm:h-7 ml-1 rounded-full ${theme.caret} animate-pulse shrink-0 self-center`}
+            aria-hidden="true"
+          />
         )}
       </div>
 
-      {/* Live Preview / Instant Evaluation Footnote */}
-      <div className="min-h-[16px] flex items-center justify-end">
+      {/* Live Preview Instant Evaluation Footnote */}
+      <div className="min-h-[16px] flex items-center justify-end mt-1">
         {!error && livePreview && livePreview !== expression && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className={`flex items-center gap-1 font-mono-math text-[11px] sm:text-xs font-medium ${theme.previewText}`}
-          >
-            <span className="opacity-50 text-[9px]">≈</span>
+          <div className={`flex items-center gap-1 font-mono-math text-[11px] sm:text-xs font-normal ${theme.previewText}`}>
+            <span className="opacity-40 text-[10px] font-mono">≈</span>
             <span>{livePreview}</span>
-          </motion.div>
+          </div>
         )}
       </div>
     </div>
   );
 }
+

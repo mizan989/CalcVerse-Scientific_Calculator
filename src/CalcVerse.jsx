@@ -2,22 +2,16 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import * as math from 'mathjs';
 import confetti from 'canvas-confetti';
 import {
-  Sun,
-  Moon,
   Volume2,
   VolumeX,
   History,
   Keyboard,
   Compass,
   Activity,
-  Cpu,
+  Calculator as CalcIcon,
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
-import { LenisProvider } from './components/ui/LenisProvider';
-import { useLenis } from './hooks/useLenis';
-import { Spotlight } from './components/ui/Spotlight';
-import { GridBackground } from './components/ui/GridBackground';
-import { InspiraDock } from './components/ui/InspiraDock';
 import { CalculatorDisplay } from './components/CalculatorDisplay';
 import { Keypad } from './components/Keypad';
 import { HistoryDrawer } from './components/HistoryDrawer';
@@ -25,7 +19,7 @@ import { UnitConverterSection } from './components/UnitConverterSection';
 import { PlotterSection } from './components/PlotterSection';
 import { KeyboardModal } from './components/KeyboardModal';
 import { playKeySound } from './utils/audio';
-import { THEMES, THEME_KEYS } from './constants/themes';
+import { THEMES } from './constants/themes';
 
 function formatNumber(val) {
   if (val === null || val === undefined) return '0';
@@ -56,8 +50,13 @@ function formatNumber(val) {
 }
 
 export function CalcVerseContent() {
-  const [themeKey, setThemeKey] = useState('obsidian');
-  const [calcMode, setCalcMode] = useState('scientific'); // 'scientific' | 'standard' | 'programmer'
+  const theme = THEMES.obsidian;
+
+  // Primary Tool Workspace: 'calc' | 'plotter' | 'converter'
+  const [activeWorkspaceTab, setActiveWorkspaceTab] = useState('calc');
+
+  // Calculator Sub-Mode: 'scientific' | 'standard' | 'programmer'
+  const [calcMode, setCalcMode] = useState('scientific');
   const [angleMode, setAngleMode] = useState('DEG'); // DEG | RAD
   const [inv, setInv] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -70,9 +69,6 @@ export function CalcVerseContent() {
   const [showHistoryDrawer, setShowHistoryDrawer] = useState(false);
   const [showShortcuts, setShowShortcuts] = useState(false);
   const [justEvaluated, setJustEvaluated] = useState(false);
-
-  const { scrollTo } = useLenis();
-  const theme = THEMES[themeKey] || THEMES.obsidian;
 
   const mathInstance = useMemo(() => math.create(math.all), []);
 
@@ -217,10 +213,6 @@ export function CalcVerseContent() {
     if (v !== null) setMemory((m) => (m || 0) - v);
   };
 
-  const cycleTheme = () => {
-    setThemeKey((k) => THEME_KEYS[(THEME_KEYS.indexOf(k) + 1) % THEME_KEYS.length]);
-  };
-
   const handleAction = (action) => {
     switch (action.type) {
       case 'digit':
@@ -348,6 +340,7 @@ export function CalcVerseContent() {
       if (k.toLowerCase() === 'e' && !e.ctrlKey && !e.metaKey) handleAction({ type: 'const', value: 'e' });
       if (k.toLowerCase() === 'h') setShowHistoryDrawer((s) => !s);
       if (k.toLowerCase() === 'm' && !e.ctrlKey) setIsMuted((m) => !m);
+      if (k === '?') setShowShortcuts((s) => !s);
     };
 
     window.addEventListener('keydown', onKey);
@@ -360,234 +353,296 @@ export function CalcVerseContent() {
     setPrevLine(`${entry.expr} =`);
     setJustEvaluated(true);
     setShowHistoryDrawer(false);
+    setActiveWorkspaceTab('calc');
   };
 
-  // Inspira Dock Navigation items
-  const dockItems = [
-    {
-      label: 'Calculator Studio',
-      icon: Cpu,
-      active: true,
-      onClick: () => scrollTo('#studio-hero'),
-    },
-    {
-      label: 'Unit Converter',
-      icon: Compass,
-      active: false,
-      onClick: () => scrollTo('#unit-converter'),
-    },
-    {
-      label: 'Function Visualizer',
-      icon: Activity,
-      active: false,
-      onClick: () => scrollTo('#function-plotter'),
-    },
-    {
-      label: `History (${history.length})`,
-      icon: History,
-      badge: history.length > 0 ? history.length : null,
-      active: showHistoryDrawer,
-      onClick: () => setShowHistoryDrawer((s) => !s),
-    },
-    {
-      label: isMuted ? 'Sound (Muted)' : 'Sound (On)',
-      icon: isMuted ? VolumeX : Volume2,
-      active: !isMuted,
-      onClick: () => setIsMuted((m) => !m),
-    },
-    {
-      label: 'Shortcuts',
-      icon: Keyboard,
-      active: showShortcuts,
-      onClick: () => setShowShortcuts((s) => !s),
-    },
-    {
-      label: `Theme: ${theme.name}`,
-      icon: themeKey === 'alabaster' || themeKey === 'bauhaus' ? Sun : Moon,
-      active: false,
-      onClick: cycleTheme,
-    },
-  ];
-
   return (
-    <div className={`w-full min-h-screen overflow-x-hidden ${theme.bg} ${theme.text} transition-colors duration-300 relative flex flex-col selection:bg-emerald-500/20`}>
-      {/* Radiant Inspira Spotlight & Ambient Grid */}
-      <Spotlight fill={theme.spotlight} className="opacity-25" />
-      <GridBackground mode="dots" className="w-full">
-        
-        {/* SECTION 1: Calculator Studio (Viewport Centered & Balanced) */}
-        <section id="studio-hero" className="w-full h-[100dvh] max-h-[100dvh] min-h-[100dvh] flex flex-col justify-between max-w-5xl mx-auto px-4 pt-3 pb-16 overflow-hidden">
-          
-          {/* Top Minimalist Navigation Header (With Integrated Center Mode Switcher) */}
-          <header className="w-full flex items-center justify-between z-20 pb-1 pt-1">
-            {/* Left: Brand Identity */}
-            <div className="flex items-center gap-2">
-              <div className={`p-1.5 rounded-xl border ${theme.panelBorder} ${theme.badgeBg} ${theme.badgeText} flex items-center justify-center`}>
-                <Cpu className="w-4 h-4 text-emerald-400" />
-              </div>
-              <div>
-                <span className="font-bold tracking-tight text-base sm:text-lg font-sans-ui">
-                  Calc<span className={theme.accent}>Verse</span>
-                </span>
-                <p className={`text-[10px] font-mono ${theme.subtext} hidden sm:block leading-none mt-0.5`}>
-                  Precision Swiss Mathematical Studio
-                </p>
-              </div>
-            </div>
+    <div className="w-full min-h-screen bg-[#090a0d] text-zinc-100 flex flex-col justify-between selection:bg-emerald-500/25 relative overflow-x-hidden">
+      {/* Precision Instrument Subtle Grid Background */}
+      <div className="fixed inset-0 bg-instrument-grid pointer-events-none z-0 opacity-40" />
 
-            {/* Center: Mode Selector Pill Navigation */}
-            <div className="flex items-center p-0.5 rounded-xl border border-white/10 dark:border-white/10 bg-black/10 dark:bg-white/5">
-              <button
-                type="button"
-                onClick={() => setCalcMode('scientific')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-calc-btn font-medium transition-all ${
-                  calcMode === 'scientific' ? `${theme.accentBg} text-zinc-950 shadow-xs font-semibold` : `${theme.subtext} hover:${theme.text}`
-                }`}
-              >
-                Scientific
-              </button>
-              <button
-                type="button"
-                onClick={() => setCalcMode('standard')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-calc-btn font-medium transition-all ${
-                  calcMode === 'standard' ? `${theme.accentBg} text-zinc-950 shadow-xs font-semibold` : `${theme.subtext} hover:${theme.text}`
-                }`}
-              >
-                Standard
-              </button>
-              <button
-                type="button"
-                onClick={() => setCalcMode('programmer')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-calc-btn font-medium transition-all ${
-                  calcMode === 'programmer' ? `${theme.accentBg} text-zinc-950 shadow-xs font-semibold` : `${theme.subtext} hover:${theme.text}`
-                }`}
-              >
-                Programmer
-              </button>
-            </div>
+      {/* Top Application Header */}
+      <header className="relative z-20 w-full border-b border-white/[0.08] bg-[#0c0e12]/95 backdrop-blur-md px-2.5 sm:px-4 md:px-6 py-2">
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-1 sm:gap-2">
+          {/* Brand Identity with Authentic Logo */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <img
+              src="/calcverse-logo.png"
+              alt="CalcVerse Logo"
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg object-contain shadow-xs border border-white/[0.1] bg-black shrink-0"
+            />
+            <span className="font-sans-ui font-bold tracking-tight text-sm sm:text-base md:text-lg leading-none text-zinc-100">
+              Calc<span className="text-emerald-400">Verse</span>
+            </span>
+          </div>
 
-            {/* Right: Quick Tools */}
-            <div className="flex items-center gap-1.5">
-              <button
-                type="button"
-                onClick={() => setShowHistoryDrawer(true)}
-                className={`flex items-center gap-1 px-2 py-1 rounded-xl border ${theme.panelBorder} ${theme.badgeBg} text-xs font-calc-btn ${theme.subtext} hover:${theme.text} lg:hidden`}
-                title="History"
-              >
-                <History className="w-3.5 h-3.5" />
-                <span>({history.length})</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setIsMuted((m) => !m)}
-                className={`p-1.5 rounded-xl border ${theme.panelBorder} ${theme.badgeBg} ${theme.subtext} hover:${theme.text} transition-colors`}
-                title={isMuted ? 'Unmute key sounds (M)' : 'Mute key sounds (M)'}
-              >
-                {isMuted ? <VolumeX className="w-3.5 h-3.5" /> : <Volume2 className="w-3.5 h-3.5" />}
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowShortcuts(true)}
-                className={`p-1.5 rounded-xl border ${theme.panelBorder} ${theme.badgeBg} ${theme.subtext} hover:${theme.text} transition-colors`}
-                title="Keyboard shortcuts"
-              >
-                <Keyboard className="w-3.5 h-3.5" />
-              </button>
-              <button
-                type="button"
-                onClick={cycleTheme}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-xl border ${theme.panelBorder} ${theme.badgeBg} text-xs font-calc-btn font-medium ${theme.accent} hover:scale-105 transition-all`}
-                title="Switch aesthetic theme"
-              >
-                {themeKey === 'alabaster' || themeKey === 'bauhaus' ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
-                <span>{theme.name}</span>
-              </button>
-            </div>
-          </header>
-
-          {/* Center Workspace: Main Calculator + Side Ledger */}
-          <div className="w-full flex-1 flex flex-col justify-center my-auto">
-            <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-stretch">
-              
-              {/* Main Calculator Column */}
-              <div className="lg:col-span-8 flex flex-col gap-2 justify-between">
-                {/* Calculator Display */}
-                <CalculatorDisplay
-                  expression={expression}
-                  prevLine={prevLine}
-                  error={error}
-                  livePreview={livePreview}
-                  angleMode={angleMode}
-                  memory={memory}
-                  inv={inv}
-                  theme={theme}
+          {/* Center Workspace Tool Switcher */}
+          <nav aria-label="Studio tools" className="flex items-center p-0.5 sm:p-1 rounded-xl border border-white/[0.08] bg-black/40 shrink-0">
+            <button
+              type="button"
+              onClick={() => setActiveWorkspaceTab('calc')}
+              className={`relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-lg text-xs font-mono font-medium transition-colors ${
+                activeWorkspaceTab === 'calc' ? 'text-zinc-950 font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              {activeWorkspaceTab === 'calc' && (
+                <motion.div
+                  layoutId="activeWorkspaceTab"
+                  transition={{ type: 'spring', damping: 24, stiffness: 350 }}
+                  className="absolute inset-0 bg-emerald-400 rounded-lg shadow-xs"
                 />
+              )}
+              <CalcIcon className="relative z-10 w-3.5 h-3.5" />
+              <span className="relative z-10 hidden sm:inline">Calculator</span>
+            </button>
 
-                {/* Calculator Keypad */}
-                <div className={`p-2.5 sm:p-3 rounded-2xl border ${theme.panelBorder} ${theme.panel} shadow-xs`}>
-                  <Keypad
-                    mode={calcMode}
-                    inv={inv}
+            <button
+              type="button"
+              onClick={() => setActiveWorkspaceTab('plotter')}
+              className={`relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-lg text-xs font-mono font-medium transition-colors ${
+                activeWorkspaceTab === 'plotter' ? 'text-zinc-950 font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              {activeWorkspaceTab === 'plotter' && (
+                <motion.div
+                  layoutId="activeWorkspaceTab"
+                  transition={{ type: 'spring', damping: 24, stiffness: 350 }}
+                  className="absolute inset-0 bg-emerald-400 rounded-lg shadow-xs"
+                />
+              )}
+              <Activity className="relative z-10 w-3.5 h-3.5" />
+              <span className="relative z-10 hidden sm:inline">Plotter</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setActiveWorkspaceTab('converter')}
+              className={`relative flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 rounded-lg text-xs font-mono font-medium transition-colors ${
+                activeWorkspaceTab === 'converter' ? 'text-zinc-950 font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              {activeWorkspaceTab === 'converter' && (
+                <motion.div
+                  layoutId="activeWorkspaceTab"
+                  transition={{ type: 'spring', damping: 24, stiffness: 350 }}
+                  className="absolute inset-0 bg-emerald-400 rounded-lg shadow-xs"
+                />
+              )}
+              <Compass className="relative z-10 w-3.5 h-3.5" />
+              <span className="relative z-10 hidden sm:inline">Converter</span>
+            </button>
+          </nav>
+
+          {/* Right Header Utilities */}
+          <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+            {/* History Toggle */}
+            <button
+              type="button"
+              onClick={() => setShowHistoryDrawer((s) => !s)}
+              aria-label="Toggle history ledger"
+              className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-xl border border-white/[0.08] bg-white/[0.04] text-xs font-mono text-zinc-300 hover:text-zinc-100 hover:bg-white/[0.08] transition-colors"
+              title="Calculation Ledger (H)"
+            >
+              <History className="w-3.5 h-3.5 text-emerald-400" />
+              <span className="text-[11px] font-medium hidden md:inline">Ledger</span>
+              <span className="text-[10px] opacity-80 font-mono">({history.length})</span>
+            </button>
+
+            {/* Sound Toggle */}
+            <button
+              type="button"
+              onClick={() => setIsMuted((m) => !m)}
+              aria-label={isMuted ? 'Unmute sounds' : 'Mute sounds'}
+              className="p-1 sm:p-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.08] transition-colors"
+              title={isMuted ? 'Unmute sounds (M)' : 'Mute sounds (M)'}
+            >
+              {isMuted ? <VolumeX className="w-3.5 h-3.5 text-rose-400" /> : <Volume2 className="w-3.5 h-3.5 text-emerald-400" />}
+            </button>
+
+            {/* Shortcuts Modal Trigger (Hardware keyboard reference for desktop/tablet) */}
+            <button
+              type="button"
+              onClick={() => setShowShortcuts(true)}
+              aria-label="Keyboard shortcuts"
+              className="hidden sm:flex p-1 sm:p-1.5 rounded-xl border border-white/[0.08] bg-white/[0.04] text-zinc-400 hover:text-zinc-100 hover:bg-white/[0.08] transition-colors"
+              title="Keyboard shortcuts (?)"
+            >
+              <Keyboard className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Main Workspace Stage */}
+      <main className="relative z-10 flex-1 w-full max-w-6xl mx-auto px-3 sm:px-4 py-3 sm:py-5 flex flex-col justify-center">
+        <AnimatePresence mode="wait">
+          {activeWorkspaceTab === 'calc' && (
+            <motion.div
+              key="workspace-calc"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.16 }}
+              className="w-full flex flex-col justify-center"
+            >
+              {/* Dual-Column Grid on Desktop / Single-Column on Mobile & Tablet */}
+              <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch justify-center">
+                {/* Primary Calculator Column */}
+                <div className="lg:col-span-8 flex flex-col gap-2.5 max-w-[480px] w-full mx-auto lg:max-w-none">
+                  {/* Mode Pill Switcher Bar */}
+                  <div className="w-full flex items-center justify-between pb-0.5">
+                    <div className="flex items-center p-0.5 rounded-xl border border-white/[0.08] bg-[#111319]">
+                      <button
+                        type="button"
+                        onClick={() => setCalcMode('scientific')}
+                        className={`relative px-3 py-1 rounded-lg text-xs font-calc-btn font-medium transition-colors ${
+                          calcMode === 'scientific' ? 'text-zinc-950 font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+                        }`}
+                      >
+                        {calcMode === 'scientific' && (
+                          <motion.div
+                            layoutId="calcModePill"
+                            transition={{ type: 'spring', damping: 24, stiffness: 350 }}
+                            className="absolute inset-0 bg-emerald-400 rounded-lg shadow-xs"
+                          />
+                        )}
+                        <span className="relative z-10">Scientific</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setCalcMode('standard')}
+                        className={`relative px-3 py-1 rounded-lg text-xs font-calc-btn font-medium transition-colors ${
+                          calcMode === 'standard' ? 'text-zinc-950 font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+                        }`}
+                      >
+                        {calcMode === 'standard' && (
+                          <motion.div
+                            layoutId="calcModePill"
+                            transition={{ type: 'spring', damping: 24, stiffness: 350 }}
+                            className="absolute inset-0 bg-emerald-400 rounded-lg shadow-xs"
+                          />
+                        )}
+                        <span className="relative z-10">Standard</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setCalcMode('programmer')}
+                        className={`relative px-3 py-1 rounded-lg text-xs font-calc-btn font-medium transition-colors ${
+                          calcMode === 'programmer' ? 'text-zinc-950 font-semibold' : 'text-zinc-400 hover:text-zinc-200'
+                        }`}
+                      >
+                        {calcMode === 'programmer' && (
+                          <motion.div
+                            layoutId="calcModePill"
+                            transition={{ type: 'spring', damping: 24, stiffness: 350 }}
+                            className="absolute inset-0 bg-emerald-400 rounded-lg shadow-xs"
+                          />
+                        )}
+                        <span className="relative z-10">Programmer</span>
+                      </button>
+                    </div>
+
+                    <span className="text-[10px] font-mono text-zinc-500 hidden sm:inline">
+                      {calcMode === 'scientific' ? 'Trig & Transcendental' : calcMode === 'programmer' ? 'Bitwise & Radix' : 'Four-Function'}
+                    </span>
+                  </div>
+
+                  {/* Calculator Display */}
+                  <CalculatorDisplay
+                    expression={expression}
+                    prevLine={prevLine}
+                    error={error}
+                    livePreview={livePreview}
                     angleMode={angleMode}
-                    isMuted={isMuted}
                     memory={memory}
+                    inv={inv}
                     theme={theme}
-                    onAction={handleAction}
-                    onToggleAngle={() => setAngleMode((m) => (m === 'DEG' ? 'RAD' : 'DEG'))}
-                    onToggleInv={() => setInv((v) => !v)}
+                  />
+
+                  {/* Calculator Keypad Housing */}
+                  <div className={`p-2.5 sm:p-3.5 rounded-2xl border ${theme.panelBorder} ${theme.panel} shadow-xl`}>
+                    <Keypad
+                      mode={calcMode}
+                      inv={inv}
+                      angleMode={angleMode}
+                      isMuted={isMuted}
+                      memory={memory}
+                      theme={theme}
+                      onAction={handleAction}
+                      onToggleAngle={() => setAngleMode((m) => (m === 'DEG' ? 'RAD' : 'DEG'))}
+                      onToggleInv={() => setInv((v) => !v)}
+                    />
+                  </div>
+                </div>
+
+                {/* Desktop Embedded History Ledger Notebook */}
+                <div className="hidden lg:block lg:col-span-4 h-full min-h-[460px] max-h-[580px]">
+                  <HistoryDrawer
+                    isOpen={true}
+                    isEmbedded={true}
+                    history={history}
+                    onSelectEntry={handleSelectHistory}
+                    onDeleteEntry={(id) => setHistory((h) => h.filter((x) => x.id !== id))}
+                    onClearHistory={() => setHistory([])}
+                    theme={theme}
                   />
                 </div>
               </div>
+            </motion.div>
+          )}
 
-              {/* Desktop Embedded History Ledger Notebook */}
-              <div className="hidden lg:block lg:col-span-4 h-full min-h-[380px] max-h-[440px]">
-                <HistoryDrawer
-                  isOpen={true}
-                  isEmbedded={true}
-                  history={history}
-                  onSelectEntry={handleSelectHistory}
-                  onDeleteEntry={(id) => setHistory((h) => h.filter((x) => x.id !== id))}
-                  onClearHistory={() => setHistory([])}
-                  theme={theme}
-                />
-              </div>
-            </div>
-          </div>
+          {activeWorkspaceTab === 'plotter' && (
+            <motion.div
+              key="workspace-plotter"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.16 }}
+              className="w-full"
+            >
+              <PlotterSection
+                theme={theme}
+                onInsertFunction={(fn) => {
+                  insertText(fn);
+                  setActiveWorkspaceTab('calc');
+                }}
+              />
+            </motion.div>
+          )}
 
-          {/* Clean Bottom Spacer for Dock Breathing Room */}
-          <div className="h-2" />
-        </section>
+          {activeWorkspaceTab === 'converter' && (
+            <motion.div
+              key="workspace-converter"
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.16 }}
+              className="w-full"
+            >
+              <UnitConverterSection
+                theme={theme}
+                onSendToCalculator={(val) => {
+                  setExpression(val);
+                  setPrevLine('');
+                  setJustEvaluated(true);
+                  setActiveWorkspaceTab('calc');
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </main>
 
-        {/* SECTION 2: Precision Unit Converter (Viewport Fitting) */}
-        <UnitConverterSection
-          theme={theme}
-          onSendToCalculator={(val) => {
-            setExpression(val);
-            setPrevLine('');
-            setJustEvaluated(true);
-            scrollTo('#studio-hero');
-          }}
-        />
+      {/* Footer Colophon */}
+      <footer className="relative z-10 w-full py-2.5 px-4 text-center border-t border-white/[0.04]">
+        <p className="text-[11px] font-mono text-zinc-500">
+          CalcVerse • Precision Obsidian Mathematical Studio
+        </p>
+      </footer>
 
-        {/* SECTION 3: Interactive Function Visualizer (Viewport Fitting) */}
-        <PlotterSection
-          theme={theme}
-          onInsertFunction={(fn) => {
-            insertText(fn);
-            scrollTo('#studio-hero');
-          }}
-        />
-
-      </GridBackground>
-
-      {/* Floating Inspira Dock */}
-      <div className="fixed bottom-3 inset-x-0 z-40 px-4 pointer-events-none flex justify-center">
-        <div className="pointer-events-auto">
-          <InspiraDock items={dockItems} theme={theme} />
-        </div>
-      </div>
-
-      {/* Mobile Slide-over History Drawer */}
+      {/* Slide-over History Drawer for Mobile / Tablet / Quick Trigger */}
       <HistoryDrawer
         isOpen={showHistoryDrawer}
         isEmbedded={false}
@@ -610,9 +665,5 @@ export function CalcVerseContent() {
 }
 
 export default function CalcVerse() {
-  return (
-    <LenisProvider>
-      <CalcVerseContent />
-    </LenisProvider>
-  );
+  return <CalcVerseContent />;
 }

@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/mizan989/CalcVerse-Scientific_Calculator">
-    <img src="./public/favicon.svg" alt="CalcVerse Logo" width="100" height="100">
+    <img src="./public/calcverse-logo.png" alt="CalcVerse Logo" width="100" height="100" style="border-radius: 20px;">
   </a>
 </p>
 
@@ -8,13 +8,13 @@
 
 # CalcVerse
 
-### The modern, open-source scientific calculator & mathematical workstation. High-precision computation powered by mathjs, real-time function graphing, multi-domain unit conversion, and tactile audio-visual themes.
+### A distinctive, precision mathematical studio and scientific calculator. High-precision computation powered by mathjs, real-time Cartesian function graphing, multi-domain dimensional unit conversion, and tactile mechanical feedback — built exclusively in Obsidian.
 
 <br/>
 
-<a href="#-quick-start"><img src="https://img.shields.io/badge/Docs-Quickstart-090a0c?style=for-the-badge&logo=gitbook&logoColor=white" alt="Docs"></a>
-<a href="https://mizan989.github.io/CalcVerse-Scientific_Calculator/"><img src="https://img.shields.io/badge/Website-CalcVerse-f0f0f0?style=for-the-badge&logoColor=000000" alt="Website"></a>
-<a href="https://github.com/mizan989/CalcVerse-Scientific_Calculator/discussions"><img src="https://img.shields.io/badge/Community-Discussions-090a0c?style=for-the-badge&logo=github&logoColor=white" alt="Discussions"></a>
+<a href="#-quick-start"><img src="https://img.shields.io/badge/Docs-Quickstart-090a0d?style=for-the-badge&logo=gitbook&logoColor=white" alt="Docs"></a>
+<a href="https://mizan989.github.io/CalcVerse-Scientific_Calculator/"><img src="https://img.shields.io/badge/Website-CalcVerse-10b981?style=for-the-badge&logoColor=white" alt="Website"></a>
+<a href="https://github.com/mizan989/CalcVerse-Scientific_Calculator/discussions"><img src="https://img.shields.io/badge/Community-Discussions-090a0d?style=for-the-badge&logo=github&logoColor=white" alt="Discussions"></a>
 
 <a href="#-ways-to-run-calcverse"><img src="https://img.shields.io/badge/CalcVerse%20App-React%2019%20%2B%20Vite-10b981?style=for-the-badge&logoColor=white" alt="CalcVerse App"></a>
 <a href="https://mizan989.github.io/CalcVerse-Scientific_Calculator/"><img src="https://img.shields.io/badge/Try%20Live%20Demo-059669?style=for-the-badge&logoColor=white" alt="Try Live Demo"></a>
@@ -35,48 +35,32 @@
 
 ## CalcVerse Overview
 
-CalcVerse is a high-performance, open-source scientific calculator and interactive mathematical workstation built for the modern web. Engineered to replace clunky, ad-bloated online calculators and dated desktop utilities, CalcVerse combines the rigorous mathematical precision of **mathjs 15** with an Apple and Linear-inspired tactile interface.
+**CalcVerse** is a high-performance, open-source scientific calculator and interactive mathematical workstation built for the modern web. Designed as a physical instrument rather than a generic utility, CalcVerse pairs the mathematical rigor of **mathjs 15** with an uncompromising, distraction-free **Obsidian** identity.
 
-From complex trigonometry and logarithmic calculus to interactive Cartesian function plotting, multi-category physical unit conversion, and persistent calculation history, CalcVerse bridges high computational rigor with fluid, responsive design.
+From advanced trigonometry, roots, powers, and logarithms to real-time Cartesian function plotting, dimensional unit conversion, and persistent calculation logs, CalcVerse offers desktop-grade computational capability with fluid responsive ergonomics.
 
-**Key Capabilities:**
+### Key Capabilities
 
-- **High-Precision Mathematical Engine** — Advanced expression evaluation powered by mathjs, supporting arithmetic, exponents, logarithms, factorials, roots, modulo, and arbitrary precision
-- **Trigonometric & Angular Precision** — Seamless toggle between Degree (DEG) and Radian (RAD) angular modes, complete with inverse functions (`asin`, `acos`, `atan`)
-- **Real-Time Live Preview** — Non-blocking background evaluation engine providing real-time result preview as you type before committing with `=`
-- **Dynamic 2D Function Plotter** — Canvas-accelerated Cartesian grapher with real-time expression compilation, dynamic zoom (`[-zoom, +zoom]`), and one-click mathematical presets
-- **Multi-Domain Unit Converter** — Instant bi-directional conversion matrix covering Length, Mass & Weight, Temperature, Digital Storage, Speed, and Time
-- **Persistent Calculation Ledger & Memory** — LocalStorage-backed calculation drawer with recallable expressions, granular record deletion, and memory registers (`M+`, `M-`, `MR`, `MC`)
-- **Web Audio Mechanical Clicks** — Synthesized mechanical switch sound effects via Web Audio API with instant mute/unmute controls
-- **Curated Tactile Design Themes** — Four bespoke themes (**Obsidian**, **Alabaster**, **Titanium**, **Bauhaus**) with spotlight cursor illumination, smooth Lenis momentum scrolling, and floating Inspira dock
-- **Comprehensive Hardware Keybindings** — Full keyboard hotkey mapping for lightning-fast arithmetic and scientific operations
-
-<br>
-
-<div align="center">
-  <pre>
-┌─────────────────────────────────────────────────────────────────────────────────┐
-│                                   CALCVERSE                                     │
-│      Input Token ➔ MathJS AST ➔ Precision Kernel ➔ Live Preview ➔ Canvas        │
-├───────────────────────────────┬─────────────────────────────────────────────────┤
-│  🧮 Precision Math Kernel      │  📈 Canvas Function Plotter                     │
-│   • Trigonometry (DEG / RAD)  │    [Plotter: f(x) = sin(x)]                     │
-│   • Logarithms (ln, log₁₀)    │       ├── Real-time canvas coordinate mapping   │
-│   • Memory registers (M+/MR)  │       └── Dynamic domain scaling & presets      │
-├───────────────────────────────┼─────────────────────────────────────────────────┤
-│  🔄 Multi-Domain Converter    │  🎨 Tactile Audio-Visual Studio                 │
-│   • 6 Physical & Digital tiers│    • 4 curated themes (Obsidian, Bauhaus, etc.) │
-│   • Instant bi-directional swap│    • Web Audio API synthesized switch clicks    │
-└───────────────────────────────┴─────────────────────────────────────────────────┘
-  </pre>
-</div>
+- **High-Precision Mathematical Engine** — Advanced expression evaluation powered by mathjs, supporting arithmetic, exponents, logarithms, factorials, roots, modulo, reciprocal, and arbitrary precision.
+- **Three Dedicated Calculation Modes** —
+  - 🔬 **Scientific Mode** — Complete scientific cockpit with trigonometry, powers ($x^2, x^3, x^y$), roots ($\sqrt{x}, \sqrt[3]{x}$), constants ($\pi, e$), and utilities ($|x|, 1/x, \text{floor}, \text{ceil}, \text{mod}$).
+  - 🔢 **Standard Mode** — Clean 4-column arithmetic layout optimized for rapid four-function computation.
+  - 💻 **Programmer Mode** — Bitwise logical operations (`AND`, `OR`, `XOR`, `NOT`, `mod`, `<<`, `>>`) and instant radix conversion (`HEX`, `BIN`, `OCT`).
+- **Trigonometric & Angular Precision** — Instant toggle between Degree (`DEG`) and Radian (`RAD`) angular modes, with 2nd-function inverse toggling (`sin⁻¹`, `cos⁻¹`, `tan⁻¹`, `10ˣ`, `eˣ`).
+- **Real-Time Live Preview** — Non-blocking background evaluation engine providing real-time result preview as you type before committing with `=`.
+- **Dynamic 2D Function Plotter** — Canvas-accelerated Cartesian grapher with mathematical gridlines, coordinate indicators, dynamic zoom controls, function presets, and a **"To Calc"** shortcut to transfer formulas into the calculator.
+- **Dimensional Unit Converter** — Instant bi-directional conversion matrix covering Length, Mass & Weight, Temperature, Digital Data, Speed, and Time, with output copy and direct calculator transfer.
+- **Persistent Calculation Ledger & Memory** — LocalStorage-backed calculation ledger with search filtering, formatted timestamps, one-click expression restoration, entry deletion, and text log export (`.txt`). Complete memory register suite (`MC`, `MR`, `MS`, `M+`, `M−`).
+- **Web Audio Mechanical Clicks** — Synthesized mechanical switch audio pulses via the Web Audio API with instant mute/unmute control (`M`).
+- **Offline & Self-Hosted Typography** — Zero external font CDNs or internet tracking. High-performance local WOFF2 font stack including **Geist**, **Geist Mono**, **Inter**, **JetBrains Mono**, and **Plus Jakarta Sans**.
+- **Intentional Responsiveness** — Rigorously tested and optimized across 9 viewport classes, from compact 320px mobile screens to large desktop monitors.
 
 ---
 
 ## UI Preview
 
 <p align="center">
-  <img src="./assets/screenshot.png" alt="CalcVerse Scientific Calculator Preview" width="100%" />
+  <img src="./assets/screenshot.png" alt="CalcVerse Obsidian Scientific Studio Preview" width="100%" style="border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08);" />
 </p>
 
 ---
@@ -110,16 +94,6 @@ sequenceDiagram
 
 ---
 
-## Use Cases
-
-- **STEM & Academic Education** — Perform rigorous trigonometry, calculus, and scientific problem-solving with immediate graphical feedback
-- **Engineering & Physics Calculations** — Evaluate complex formulas, exponential decay, inverse trigonometric functions, and arbitrary powers
-- **Dimensional & Metric Conversion** — Convert measurements between metric, imperial, and digital storage units in real time
-- **Function Visualization & Curve Analysis** — Plot polynomial, trigonometric, and exponential equations to inspect domain roots and behaviors
-- **Rapid Daily & Professional Computing** — Utilize full keyboard accessibility and instant memory recall for continuous workflows
-
----
-
 ## 🚀 Quick Start
 
 **Prerequisites:**
@@ -143,60 +117,42 @@ npm run dev
 Open **[http://localhost:5173](http://localhost:5173)** in your browser to start calculating.
 
 > [!NOTE]
-> CalcVerse runs entirely client-side with zero external network dependencies or API keys required. All calculation logs and theme preferences are saved safely in your browser's `localStorage`.
-
----
-
-## Ways to Run CalcVerse
-
-- **Live Web Application (GitHub Pages)** — Hosted live on GitHub Pages with zero installation required. [Try Live App](https://mizan989.github.io/CalcVerse-Scientific_Calculator/)
-- **Local Development Server** — Run with instant hot-module replacement (HMR) using Vite 8 and React 19. [Quick Start](#-quick-start)
-- **Static Production Bundle** — Compile optimized static assets (`npm run build`) and deploy to any hosting provider (GitHub Pages, Vercel, Netlify, Cloudflare Pages, Nginx).
+> CalcVerse runs entirely client-side with zero external network dependencies, trackers, or API keys required. All calculation logs and preferences are saved in your browser's `localStorage`.
 
 ---
 
 ## ☁️ Workspaces & Specialized Modules
 
-CalcVerse provides a cohesive collection of mathematical tools accessible via the interactive Inspira floating dock:
+CalcVerse provides three integrated tools accessible via the top studio navigation:
 
-- **Scientific Keypad Studio (`#calculator`)** — Primary calculation cockpit featuring multi-level displays, caret tracking, live preview, angle mode selectors (`DEG` / `RAD`), inverse toggle (`INV`), and memory registers (`M+`, `M-`, `MR`, `MC`).
-- **Interactive Function Plotter (`#plotter`)** — Canvas-accelerated 2D Cartesian graphing workspace. Plot any arbitrary function $f(x)$, dynamically adjust domain zoom, and experiment with quick presets (`sin(x)`, `cos(x)`, `x²`, `x³ - 3x`, `1/x`, `e^(-x²)`).
-- **Multi-Category Unit Converter (`#converter`)** — Comprehensive conversion engine across 6 major physical and digital measurement systems with one-click output copying and quick expression injection.
-- **Persistent History Drawer** — Slide-out calculation archive logging mathematical expressions, computed results, and relative timestamps with one-click expression restoration.
-- **Keyboard Shortcuts Reference Modal (`?`)** — Interactive overlay cataloging all hardware keybindings for rapid keypad navigation without touching a mouse.
+- **Calculator Studio (`calc`)** — Primary calculation cockpit with multi-tier display, caret tracking, live preview footnote, status badges (`DEG` / `RAD`, `INV`, `M`), and memory registers (`MC`, `MR`, `MS`, `M+`, `M−`). Embedded alongside the Calculation Ledger on desktop.
+- **Cartesian Function Plotter (`plotter`)** — Canvas-accelerated 2D graphing workspace. Plot arbitrary mathematical functions $f(x)$, dynamically adjust zoom levels, and explore presets (`sin(x)`, `cos(x)`, `x²`, `x³ - 3x`, `1/x`, `e^(-x²)`, `tan(x)`, `|x|`).
+- **Dimensional Unit Converter (`converter`)** — Comprehensive conversion engine across 6 physical and digital measurement systems with unit swapping and direct transfer into the calculation display.
+- **Calculation Ledger Notebook** — Side-by-side desktop ledger or mobile slide-over drawer recording expressions, results, and timestamps. Supports search filtering, entry restoration, copy, and file export.
+- **Hardware Keyboard Shortcuts Modal (`?`)** — Quick reference cataloging all hardware keybindings for rapid keypad navigation without touching a mouse.
 
 ---
 
-## ✨ Features & Technical Highlights
+## ⌨️ Keyboard Shortcuts Reference
 
-### High-Precision Mathematical Evaluation
+CalcVerse is engineered for full hardware keyboard accessibility:
 
-CalcVerse utilizes **mathjs 15** for expression parsing and evaluation. Trigonometric functions dynamically adapt based on the selected angular mode:
+| Key Binding | Action | Key Binding | Action |
+| :--- | :--- | :--- | :--- |
+| `0` – `9` | Input digits | `S` | Insert `sin(` |
+| `+`, `-`, `*`, `/` | Basic arithmetic operators | `C` | Insert `cos(` |
+| `Enter` or `=` | Evaluate expression | `T` | Insert `tan(` |
+| `Backspace` | Delete last character | `L` | Insert $\log_{10}($ |
+| `Esc` | Clear all (`AC`) | `N` | Insert natural log $\ln($ |
+| `.` | Decimal point | `^` | Exponentiation ($x^y$) |
+| `%` | Modulo / Percentage | `!` | Factorial ($n!$) |
+| `(` and `)` | Parentheses grouping | `P` | Insert Pi constant ($\pi$) |
+| `H` | Toggle History Ledger | `E` | Insert Euler's constant ($e$) |
+| `M` | Toggle Key Sound Effects | `?` | Open Keyboard Shortcuts Modal |
 
-```javascript
-// DEG vs RAD trigonometric adaptation
-const toRad = (x) => (angleMode === 'DEG' ? (x * Math.PI) / 180 : x);
-const toDeg = (x) => (angleMode === 'DEG' ? (x * 180) / Math.PI : x);
+---
 
-mathInstance.import({
-  sin: (x) => Math.sin(toRad(x)),
-  cos: (x) => Math.cos(toRad(x)),
-  tan: (x) => Math.tan(toRad(x)),
-  asin: (x) => toDeg(Math.asin(x)),
-  acos: (x) => toDeg(Math.acos(x)),
-  atan: (x) => toDeg(Math.atan(x)),
-}, { override: true });
-```
-
-### Canvas-Accelerated Function Graphing
-
-The function grapher compiles mathematical expressions into optimized evaluators and maps coordinate geometry to a high-DPI HTML5 Canvas:
-
-- **Dynamic Domain Scaling** — Zoom in and out smoothly between `[-5, 5]` and `[-50, 50]` domain intervals.
-- **Cartesian Grid & Axis Markings** — Dynamic subdivision grid lines with numerical domain labels adapting to theme contrast.
-- **High-DPI Retina Support** — Automatically scales with `window.devicePixelRatio` for razor-sharp rendering on all screens.
-
-### Multi-Domain Unit Conversion Matrix
+## Multi-Domain Unit Conversion Matrix
 
 | Category | Supported Units |
 | :--- | :--- |
@@ -207,35 +163,6 @@ The function grapher compiles mathematical expressions into optimized evaluators
 | **Speed** | Meters/sec (`m/s`), Kilometers/hr (`km/h`), Miles/hr (`mph`), Knots (`kn`), Mach (at sea level) |
 | **Time** | Milliseconds (`ms`), Seconds (`s`), Minutes (`min`), Hours (`hr`), Days, Weeks, Years |
 
-### Tactile Audio & Visual System
-
-- **Web Audio API Key Clicks** — Synthetic micro-burst audio pulses simulate real mechanical keyboard switches with zero external audio assets.
-- **Bespoke Theme Engine** —
-  - 🌑 **Obsidian** — Deep OLED black (`#090a0c`) with vibrant emerald accents (`#34d399`) and cyan spotlights
-  - ⚪ **Alabaster** — Minimalist porcelain white (`#f7f8fa`) with cobalt blue accents (`#2563eb`)
-  - 🪙 **Titanium** — Industrial graphite (`#131417`) with warm amber accents (`#f59e0b`)
-  - 🎨 **Bauhaus** — Classic archival parchment (`#f4efe6`) with vibrant vermilion orange (`#ea580c`)
-- **Inspira Floating Dock** — Mac-style magnification dock for seamless jumping between Calculator, Grapher, Converter, and History.
-
----
-
-## ⌨️ Keyboard Shortcuts Reference
-
-CalcVerse is engineered for full keyboard navigation:
-
-| Key Binding | Action | Key Binding | Action |
-| :--- | :--- | :--- | :--- |
-| `0` – `9` | Input digits | `S` | Insert `sin(` |
-| `+`, `-`, `*`, `/` | Basic arithmetic operators | `C` | Insert `cos(` |
-| `Enter` or `=` | Evaluate expression | `T` | Insert `tan(` |
-| `Backspace` | Delete last character | `L` | Insert `log10(` |
-| `Esc` | Clear all (`AC`) | `N` | Insert natural log `ln(` |
-| `.` | Decimal point | `^` | Exponentiation (`xʸ`) |
-| `%` | Modulo / Percentage | `!` | Factorial (`n!`) |
-| `(` and `)` | Parentheses grouping | `P` | Insert Pi constant (`π`) |
-| `H` | Toggle History Drawer | `E` | Insert Euler's constant (`e`) |
-| `M` | Toggle Key Sound Effects | `?` | Open Keyboard Shortcuts Modal |
-
 ---
 
 ## Modern Tech Stack
@@ -243,10 +170,11 @@ CalcVerse is engineered for full keyboard navigation:
 | Layer | Technologies |
 | :--- | :--- |
 | **Frontend Framework** | React 19, Vite 8 |
-| **Styling & Design Tokens** | Tailwind CSS v4, Custom CSS Variables |
+| **Styling & Design Tokens** | Tailwind CSS v4, Obsidian design tokens |
 | **Math & Graphing Engine** | mathjs 15, HTML5 Canvas 2D API |
-| **Interactivity & Motion** | Framer Motion, Lenis Smooth Scroll, Canvas Confetti |
+| **Interactivity & Motion** | Framer Motion, Canvas Confetti |
 | **Iconography** | Lucide React |
+| **Typography** | Self-hosted WOFF2 fonts (Geist, Geist Mono, Inter, JetBrains Mono, Plus Jakarta Sans) |
 | **Audio Synthesis** | Web Audio API (Synthesized mechanical switch clicks) |
 | **Persistence** | Browser LocalStorage (Calculation history & preferences) |
 | **Deployment & Hosting** | GitHub Pages (`gh-pages`) |
@@ -258,40 +186,35 @@ CalcVerse is engineered for full keyboard navigation:
 ```text
 CalcVerse/
 ├── public/
-│   ├── favicon.svg            # Vector calculator application logo & favicon
-│   └── icons.svg              # SVG sprite assets
+│   ├── calcverse-logo.png     # Authentic visual identity logo & favicon
+│   └── fonts/                 # Self-hosted WOFF2 fonts & local fonts.css
 │
 ├── src/
-│   ├── assets/                # Hero imagery and framework branding
+│   ├── assets/
+│   │   └── calcverse-logo.png # High-resolution brand logo asset
 │   ├── components/
-│   │   ├── CalculatorDisplay.jsx   # Multi-tier expression & result viewport
-│   │   ├── HistoryDrawer.jsx       # Slide-out calculation history ledger
-│   │   ├── KeyboardModal.jsx       # Interactive keyboard shortcut dialog
-│   │   ├── Keypad.jsx              # Tactile scientific keypad layout & controls
-│   │   ├── PlotterSection.jsx      # Canvas-based 2D Cartesian function grapher
-│   │   ├── UnitConverterSection.jsx # Multi-category physical & digital converter
+│   │   ├── CalculatorDisplay.jsx    # Display bezel, status badges, & live preview
+│   │   ├── HistoryDrawer.jsx        # Calculation ledger (embedded & slide-over)
+│   │   ├── KeyboardModal.jsx        # Hardware keyboard shortcuts dialog
+│   │   ├── Keypad.jsx               # Scientific, Standard, & Programmer keypads
+│   │   ├── PlotterSection.jsx       # Canvas 2D Cartesian function grapher
+│   │   ├── UnitConverterSection.jsx # Multi-domain unit conversion matrix
 │   │   └── ui/
-│   │       ├── BentoCard.jsx       # Glassmorphic container with theme borders
-│   │       ├── GridBackground.jsx  # Atmospheric background grid pattern
-│   │       ├── InspiraDock.jsx     # Floating magnification dock navigation
-│   │       ├── LenisProvider.jsx   # Smooth inertia scrolling container
-│   │       ├── Spotlight.jsx       # Interactive radial spotlight lighting effect
-│   │       └── TactileButton.jsx   # Spring-animated tactile button primitive
+│   │       └── TactileButton.jsx    # Tactile spring-animated keycap primitive
 │   ├── constants/
-│   │   └── themes.js          # Obsidian, Alabaster, Titanium, Bauhaus tokens
-│   ├── hooks/
-│   │   └── useLenis.js        # Smooth scrolling orchestration hook
+│   │   └── themes.js                # Obsidian design token specifications
 │   ├── utils/
-│   │   └── audio.js           # Web Audio API procedural mechanical click synthesizer
-│   ├── CalcVerse.jsx          # Root calculation state coordinator & dock manager
-│   ├── App.jsx                # Application wrapper
-│   ├── main.jsx               # React 19 DOM entrypoint
-│   └── index.css              # Tailwind CSS v4 imports & custom scrollbars
+│   │   └── audio.js                 # Web Audio API mechanical switch synthesizer
+│   ├── CalcVerse.jsx                # Root application coordinator & workspace router
+│   ├── App.jsx                      # Application wrapper
+│   ├── main.jsx                     # React 19 DOM entrypoint
+│   └── index.css                    # Tailwind CSS v4 imports, grid texture, & scrollbars
 │
 ├── assets/
 │   └── screenshot.png         # High-resolution application preview screenshot
 ├── package.json               # Project manifest & dependency configuration
-└── vite.config.js             # Vite 8 bundler configuration with React plugin
+├── vite.config.js             # Vite 8 bundler configuration with React plugin
+└── eslint.config.js           # ESLint configuration
 ```
 
 ---
@@ -341,7 +264,7 @@ npm run preview
 
 ## Contributing
 
-We welcome contributions! Whether you're adding matrix algebra operations, expanding the unit conversion catalog, or introducing new themes:
+We welcome contributions! Whether you're adding matrix algebra operations, expanding the unit conversion catalog, or refining keyboard accessibility:
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/matrix-operations`)
@@ -366,12 +289,4 @@ CalcVerse is crafted with gratitude towards the open-source community:
 - [Tailwind CSS v4](https://tailwindcss.com/) — Next-generation utility-first styling engine
 - [Lucide Icons](https://lucide.dev/) — Consistent, elegant UI iconography
 - [Framer Motion](https://www.framer.com/motion/) — Fluid spring physics and micro-interactions
-- [Lenis](https://lenis.darkroom.engineering/) — Premium smooth scrolling momentum engine
-- [Canvas Confetti](https://github.com/catdad/canvas-confetti) — Joyful celebration animations
-
-<div align="center">
-
-> [!NOTE]
-> **Mathematical Precision & Float Representation:** CalcVerse leverages mathjs 15 for arbitrary precision and exact expression parsing. Scientific notation automatically activates beyond standard float thresholds (`1e15` or `< 1e-10`) to safeguard accuracy and prevent display overflow.
-
-</div>
+- [Canvas Confetti](https://github.com/catdad/canvas-confetti) — Celebration animations

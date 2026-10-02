@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { ArrowRightLeft, Send, Copy, Check, Scale, Ruler, Thermometer, HardDrive, Gauge, Clock } from 'lucide-react';
-import { BentoCard } from './ui/BentoCard';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const UNITS_DATA = {
   length: {
@@ -197,139 +197,152 @@ export function UnitConverterSection({ theme, onSendToCalculator }) {
   };
 
   return (
-    <section
+    <div
       id="unit-converter"
-      className="w-full h-[100dvh] max-h-[100dvh] min-h-[100dvh] flex flex-col justify-between max-w-5xl mx-auto px-4 pt-3 pb-2 sm:pt-4 sm:pb-3 overflow-hidden"
+      className="w-full max-w-4xl mx-auto px-3 sm:px-4 py-3 flex flex-col gap-3"
     >
-      <div className="text-center sm:text-left">
-        <h2 className={`text-base sm:text-xl font-bold tracking-tight ${theme.text}`}>
-          Precision Unit Converter
-        </h2>
-        <p className={`text-[11px] sm:text-xs ${theme.subtext} font-mono mt-0.5`}>
-          Instant bi-directional dimensional conversions across science & engineering units.
-        </p>
-      </div>
-
-      <div className="flex-1 flex flex-col justify-center my-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-2.5 sm:gap-3.5 items-stretch">
-          {/* Category Selector Tabs */}
-          <div className="lg:col-span-4 flex lg:flex-col gap-1.5 overflow-x-auto pb-0.5 lg:pb-0">
-            {Object.entries(UNITS_DATA).map(([key, item]) => {
-              const Icon = item.icon;
-              const isActive = category === key;
-              return (
-                <button
-                  key={key}
-                  type="button"
-                  onClick={() => handleCategoryChange(key)}
-                  className={`flex items-center gap-2.5 px-3 py-2 rounded-xl border text-left text-xs font-mono transition-all duration-150 whitespace-nowrap ${
-                    isActive
-                      ? `${theme.categoryActive} font-semibold shadow-xs`
-                      : `${theme.panel} ${theme.panelBorder} ${theme.subtext} hover:${theme.text}`
-                  }`}
-                >
-                  <Icon className="w-4 h-4 shrink-0" />
-                  <span>{item.name}</span>
-                </button>
-              );
-            })}
+      {/* Converter Panel */}
+      <div className={`w-full rounded-2xl border ${theme.panelBorder} ${theme.panel} p-4 sm:p-5 shadow-lg flex flex-col gap-4`}>
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5 pb-2.5 border-b border-white/[0.06]">
+          <div className="flex items-center gap-2">
+            <div className={`p-1.5 rounded-xl ${theme.badgeBg} ${theme.accent} border ${theme.panelBorderSubtle}`}>
+              <ArrowRightLeft className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className={`text-sm sm:text-base font-semibold tracking-tight ${theme.text}`}>
+                Dimensional Unit Converter
+              </h2>
+              <p className={`text-[11px] font-mono text-zinc-400 mt-0.5`}>
+                Precision bi-directional engineering and scientific conversions
+              </p>
+            </div>
           </div>
 
-          {/* Converter Workspace Card */}
-          <div className="lg:col-span-8">
-            <BentoCard
-              theme={theme}
-              title={`${catData.name} Converter`}
-              subtitle="Real-time synchronized dimension calculation"
-              icon={catData.icon}
-              action={
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    onClick={handleCopy}
-                    className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono border ${theme.panelBorder} ${theme.subtext} hover:${theme.text} transition-colors`}
-                    title="Copy result"
-                  >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copied ? 'Copied' : 'Copy'}</span>
-                  </button>
-                  {onSendToCalculator && (
-                    <button
-                      type="button"
-                      onClick={handleSend}
-                      className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-medium ${theme.toolbarActive} transition-colors`}
-                      title="Send result to main calculator"
-                    >
-                      <Send className="w-3.5 h-3.5" />
-                      <span>To Calc</span>
-                    </button>
-                  )}
-                </div>
-              }
+          <div className="flex items-center gap-1.5 self-end sm:self-center">
+            <button
+              type="button"
+              onClick={handleCopy}
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono border ${theme.panelBorder} text-zinc-300 hover:text-zinc-100 hover:bg-white/[0.06] transition-colors`}
+              title="Copy converted value"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-9 gap-2.5 sm:gap-3 items-center">
-                {/* From Unit */}
-                <div className="sm:col-span-4 flex flex-col gap-1">
-                  <label className={`text-[10px] font-mono ${theme.subtext}`}>From</label>
-                  <input
-                    type="number"
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    className={`w-full px-3 py-1.5 rounded-xl border ${theme.panelBorder} font-mono-math text-sm outline-none bg-black/5 dark:bg-white/5 ${theme.text} focus:border-emerald-500`}
-                  />
-                  <select
-                    value={fromUnit}
-                    onChange={(e) => setFromUnit(e.target.value)}
-                    className={`w-full px-2.5 py-1 rounded-xl border ${theme.panelBorder} font-mono text-xs outline-none bg-black/5 dark:bg-white/5 ${theme.text}`}
-                  >
-                    {Object.entries(catData.labels).map(([uKey, uLabel]) => (
-                      <option key={`from-${uKey}`} value={uKey} className="bg-zinc-900 text-zinc-100">
-                        {uLabel}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copied ? 'Copied' : 'Copy'}</span>
+            </button>
+            {onSendToCalculator && (
+              <button
+                type="button"
+                onClick={handleSend}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-mono font-medium bg-emerald-500 text-zinc-950 hover:bg-emerald-400 transition-colors"
+                title="Send converted result to calculator"
+              >
+                <Send className="w-3.5 h-3.5" />
+                <span>To Calc</span>
+              </button>
+            )}
+          </div>
+        </div>
 
-                {/* Swap Button */}
-                <div className="sm:col-span-1 flex justify-center py-1 sm:py-0">
-                  <button
-                    type="button"
-                    onClick={swapUnits}
-                    className={`p-2 rounded-xl border ${theme.panelBorder} ${theme.subtext} hover:${theme.text} hover:scale-105 active:scale-95 transition-all`}
-                    title="Swap units"
-                  >
-                    <ArrowRightLeft className="w-4 h-4" />
-                  </button>
-                </div>
+        {/* Category Tabs */}
+        <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1">
+          {Object.entries(UNITS_DATA).map(([key, item]) => {
+            const Icon = item.icon;
+            const isActive = category === key;
+            return (
+              <button
+                key={key}
+                type="button"
+                onClick={() => handleCategoryChange(key)}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono transition-all duration-150 whitespace-nowrap shrink-0 ${
+                  isActive
+                    ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/35 font-medium shadow-xs'
+                    : 'bg-[#12141a]/60 border-white/[0.06] text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04]'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5 shrink-0" />
+                <span>{item.name}</span>
+              </button>
+            );
+          })}
+        </div>
 
-                {/* To Unit */}
-                <div className="sm:col-span-4 flex flex-col gap-1">
-                  <label className={`text-[10px] font-mono ${theme.subtext}`}>To (Result)</label>
-                  <div
-                    className={`w-full px-3 py-1.5 rounded-xl border ${theme.panelBorder} font-mono-math text-sm font-semibold truncate bg-black/10 dark:bg-white/10 ${theme.text}`}
-                  >
-                    {convertedResult}
-                  </div>
-                  <select
-                    value={toUnit}
-                    onChange={(e) => setToUnit(e.target.value)}
-                    className={`w-full px-2.5 py-1 rounded-xl border ${theme.panelBorder} font-mono text-xs outline-none bg-black/5 dark:bg-white/5 ${theme.text}`}
-                  >
-                    {Object.entries(catData.labels).map(([uKey, uLabel]) => (
-                      <option key={`to-${uKey}`} value={uKey} className="bg-zinc-900 text-zinc-100">
-                        {uLabel}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </BentoCard>
+        {/* Input & Output Conversion Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-9 gap-3 items-center pt-1">
+          {/* Source Input */}
+          <div className="md:col-span-4 flex flex-col gap-1.5">
+            <label className="text-[11px] font-mono text-zinc-400">
+              Source Value
+            </label>
+            <input
+              type="number"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              aria-label="Value to convert"
+              className={`w-full px-3.5 py-2 rounded-xl border ${theme.panelBorder} font-mono-math text-base outline-none bg-black/40 text-zinc-100 focus:border-emerald-500/60 transition-colors`}
+            />
+            <select
+              value={fromUnit}
+              onChange={(e) => setFromUnit(e.target.value)}
+              aria-label="Source unit"
+              className={`w-full px-3 py-1.5 rounded-xl border ${theme.panelBorder} font-mono text-xs outline-none bg-[#14161f] text-zinc-200 focus:border-emerald-500/60`}
+            >
+              {Object.entries(catData.labels).map(([uKey, uLabel]) => (
+                <option key={`from-${uKey}`} value={uKey} className="bg-zinc-900 text-zinc-100">
+                  {uLabel}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Swap Trigger */}
+          <div className="md:col-span-1 flex justify-center py-0.5 md:py-0">
+            <button
+              type="button"
+              onClick={swapUnits}
+              aria-label="Swap units"
+              className="p-2 rounded-xl border border-white/[0.08] bg-[#14161f] text-zinc-300 hover:text-emerald-400 hover:border-emerald-500/30 hover:scale-105 active:scale-95 transition-all shadow-sm"
+              title="Swap source and target units"
+            >
+              <ArrowRightLeft className="w-4 h-4" />
+            </button>
+          </div>
+
+          {/* Converted Output */}
+          <div className="md:col-span-4 flex flex-col gap-1.5">
+            <label className="text-[11px] font-mono text-zinc-400">
+              Target Value (Converted)
+            </label>
+            <div
+              className={`w-full px-3.5 py-2 rounded-xl border ${theme.panelBorder} font-mono-math text-base font-semibold truncate bg-black/50 text-emerald-400 flex items-center min-h-[42px] shadow-inner`}
+            >
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={`${convertedResult}-${toUnit}`}
+                  initial={{ opacity: 0, y: -2 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 2 }}
+                  transition={{ duration: 0.12 }}
+                  className="truncate"
+                >
+                  {convertedResult}
+                </motion.span>
+              </AnimatePresence>
+            </div>
+            <select
+              value={toUnit}
+              onChange={(e) => setToUnit(e.target.value)}
+              aria-label="Target unit"
+              className={`w-full px-3 py-1.5 rounded-xl border ${theme.panelBorder} font-mono text-xs outline-none bg-[#14161f] text-zinc-200 focus:border-emerald-500/60`}
+            >
+              {Object.entries(catData.labels).map(([uKey, uLabel]) => (
+                <option key={`to-${uKey}`} value={uKey} className="bg-zinc-900 text-zinc-100">
+                  {uLabel}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
-
-      {/* Spacer to balance bottom */}
-      <div className="h-6" />
-    </section>
+    </div>
   );
 }

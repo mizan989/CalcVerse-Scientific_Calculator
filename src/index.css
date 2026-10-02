@@ -2,35 +2,31 @@
 
 @layer base {
   :root {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color-scheme: dark light;
+    font-family: 'Inter', 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color-scheme: dark;
+    background-color: #090a0d;
+    color: #f4f4f5;
   }
 
-  html.lenis, html.lenis body {
-    height: auto;
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-  }
-
-  .lenis.lenis-smooth [data-lenis-prevent] {
-    overscroll-behavior: contain;
-  }
-
-  .lenis.lenis-stopped {
-    overflow: hidden;
-  }
-
-  .lenis.lenis-scrolling iframe {
-    pointer-events: none;
+  body {
+    background-color: #090a0d;
+    color: #f4f4f5;
+    overflow-x: hidden;
+    min-height: 100dvh;
+    touch-action: manipulation;
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Slim Obsidian */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
@@ -38,50 +34,58 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(150, 150, 150, 0.2);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(150, 150, 150, 0.4);
+  background: rgba(255, 255, 255, 0.22);
 }
 
 /* Typography Utilities */
 .font-calc-btn {
   font-family: 'Geist', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   font-feature-settings: "cv05" 1, "cv11" 1, "ss01" 1, "tnum" 1;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
 }
 
 .font-mono-math {
-  font-family: 'Geist Mono', 'JetBrains Mono', monospace;
-  font-feature-settings: "tnum" 1;
+  font-family: 'Geist Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-feature-settings: "tnum" 1, "zero" 1;
 }
 
 .font-sans-ui {
   font-family: 'Geist', 'Inter', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Subtle dot grid pattern */
-.bg-dot-pattern {
-  background-image: radial-gradient(rgba(128, 128, 128, 0.15) 1px, transparent 1px);
-  background-size: 24px 24px;
-}
-
-.bg-dot-pattern-dense {
-  background-image: radial-gradient(rgba(128, 128, 128, 0.12) 1px, transparent 1px);
-  background-size: 16px 16px;
-}
-
-/* Blueprint subtle grid */
-.bg-grid-pattern {
-  background-image: linear-gradient(to right, rgba(128, 128, 128, 0.07) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(128, 128, 128, 0.07) 1px, transparent 1px);
+/* Precision Instrument Instrument Grid Pattern */
+.bg-instrument-grid {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
   background-size: 32px 32px;
 }
 
-/* Glassmorphism utility */
-.glass-panel {
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
+
+/* Restrained tactile shadows and highlights */
+.hairline-border {
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.hairline-highlight {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
